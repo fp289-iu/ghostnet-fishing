@@ -1,11 +1,11 @@
-package org.sheashepherd.ghostnet.beans;
+package org.sheasepherd.ghostnet.beans;
 
-import org.sheashepherd.ghostnet.dao.GhostNetDAO;
-import org.sheashepherd.ghostnet.dao.PersonDAO;
-import org.sheashepherd.ghostnet.model.GhostNet;
-import org.sheashepherd.ghostnet.model.GhostNet.Groesse;
-import org.sheashepherd.ghostnet.model.Person;
-import org.sheashepherd.ghostnet.model.Person.Typ;
+import org.sheasepherd.ghostnet.dao.GhostNetDAO;
+import org.sheasepherd.ghostnet.dao.PersonDAO;
+import org.sheasepherd.ghostnet.model.GhostNet;
+import org.sheasepherd.ghostnet.model.Person;
+import org.sheasepherd.ghostnet.model.GhostNet.Groesse;
+import org.sheasepherd.ghostnet.model.Person.Typ;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;

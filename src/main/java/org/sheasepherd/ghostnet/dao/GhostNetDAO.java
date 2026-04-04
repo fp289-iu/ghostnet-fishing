@@ -1,6 +1,7 @@
-package org.sheashepherd.ghostnet.dao;
+package org.sheasepherd.ghostnet.dao;
 
-import org.sheashepherd.ghostnet.model.GhostNet;
+import org.sheasepherd.ghostnet.model.GhostNet;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

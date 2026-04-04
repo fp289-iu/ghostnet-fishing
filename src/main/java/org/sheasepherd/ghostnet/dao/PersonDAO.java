@@ -1,9 +1,9 @@
-package org.sheashepherd.ghostnet.dao;
+package org.sheasepherd.ghostnet.dao;
 
 import java.util.List;
 
-import org.sheashepherd.ghostnet.model.Person;
-import org.sheashepherd.ghostnet.model.Person.Typ;
+import org.sheasepherd.ghostnet.model.Person;
+import org.sheasepherd.ghostnet.model.Person.Typ;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;

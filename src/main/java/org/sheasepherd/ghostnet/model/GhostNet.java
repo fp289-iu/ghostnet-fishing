@@ -1,4 +1,4 @@
-package org.sheashepherd.ghostnet.model;
+package org.sheasepherd.ghostnet.model;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
