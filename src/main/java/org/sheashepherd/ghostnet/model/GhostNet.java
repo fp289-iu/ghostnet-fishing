@@ -51,6 +51,21 @@ public class GhostNet implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bergende_person_id")
     private Person bergendePerson;
+    
+
+    // Konstruktoren
+
+    public GhostNet() {}
+
+    public GhostNet(Double latitude, Double longitude, Groesse groesse) {
+        this.latitude  = latitude;
+        this.longitude = longitude;
+        this.groesse   = groesse;
+        this.status    = Status.GEMELDET;
+        this.erstelltAm = LocalDateTime.now();
+    }
+    
+    // Getter und Setter
 
 	public Long getId() {
 		return id;

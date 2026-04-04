@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 @Table(name = "person")
 public class Person implements Serializable {
 
-    public enum TYP {
+    public enum Typ {
         MELDEND,
         BERGEND
     }
@@ -33,10 +33,24 @@ public class Person implements Serializable {
     
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TYP typ;
+    private Typ typ;
     
     @Column(nullable = false)
     private Boolean anonym;
+    
+
+    // Konstruktoren
+
+    public Person() {}
+
+    public Person(String name, String telefonnummer, Typ typ, Boolean anonym) {
+        this.name          = name;
+        this.telefonnummer = telefonnummer;
+        this.typ           = typ;
+        this.anonym        = anonym;
+    }
+    
+    // Getter und Setter 
 
 	public Long getId() {
 		return id;
@@ -62,11 +76,11 @@ public class Person implements Serializable {
 		this.telefonnummer = telefonnummer;
 	}
 
-	public TYP getTyp() {
+	public Typ getTyp() {
 		return typ;
 	}
 
-	public void setTyp(TYP typ) {
+	public void setTyp(Typ typ) {
 		this.typ = typ;
 	}
 
