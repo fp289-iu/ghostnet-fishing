@@ -43,6 +43,10 @@ public class MeldeBean {
 
         return "pages/netze?faces-redirect=true";
     }
+    
+    public Groesse[] getGroesseValues() {
+        return Groesse.values();
+    }
 
     // Getter und Setter
 

@@ -21,8 +21,8 @@
             <h:outputLabel value="Geschätzte Größe:"/>
             <h:selectOneMenu value="#{meldeBean.groesse}" required="true">
                 <f:selectItem itemLabel="-- bitte wählen --" itemValue=""/>
-                <f:selectItems value="#{meldeBean.groesse.values()}" 
-                               var="g" itemLabel="#{g}" itemValue="#{g}"/>
+                <f:selectItems value="#{meldeBean.groesseValues}"
+               		var="g" itemLabel="#{g}" itemValue="#{g}"/>
             </h:selectOneMenu>
 
             <h:outputLabel value="Anonym melden:"/>
