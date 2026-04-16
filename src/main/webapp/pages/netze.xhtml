@@ -1,33 +1,76 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
 <h:head>
-    <title>Geisternetze - Shea Sepherd</title>
+	<title>Geisternetze - Shea Sepherd</title>
 </h:head>
 <h:body>
-    <h1>Zu bergende Geisternetze</h1>
-    <a href="/ghostnet/">Startseite</a> |
+	<h1>Zu bergende Geisternetze</h1>
+	<a href="/ghostnet/">Startseite</a> |
     <a href="/ghostnet/pages/melden.xhtml">Neues Netz melden</a>
+    
+    <h:form id="netzFormular">
 
-    <h:dataTable value="#{ghostNetBean.zuBergendeNetze}" var="netz"
-                 border="1">
-        <h:column>
-            <f:facet name="header">ID</f:facet>
+	<!--  Tabelle aller zu bergenden Geisternetze -->
+	<h:dataTable value="#{ghostNetBean.zuBergendeNetze}" var="netz"
+		border="1">
+
+		<!--  Eindeutige ID des Geisternetzes -->
+		<h:column>
+			<f:facet name="header">ID</f:facet>
             #{netz.id}
         </h:column>
-        <h:column>
-            <f:facet name="header">Koordinaten</f:facet>
+
+		<!-- Koordinaten des Netzes  -->
+		<h:column>
+			<f:facet name="header">Koordinaten</f:facet>
             #{netz.latitude}, #{netz.longitude}
         </h:column>
-        <h:column>
-            <f:facet name="header">Größe</f:facet>
+
+		<!-- Geschätzte Grösse des Netzes  -->
+		<h:column>
+			<f:facet name="header">Größe</f:facet>
             #{netz.groesse}
         </h:column>
-        <h:column>
-            <f:facet name="header">Status</f:facet>
+
+		<!--  aktueller Status des Geisternetzes -->
+		<h:column>
+			<f:facet name="header">Status</f:facet>
             #{netz.status}
         </h:column>
-    </h:dataTable>
+
+		<!-- Button öffnet Dialog zur Angabe der Persondaten-->
+		<h:column>
+			<f:facet name="header">Aktionen</f:facet>
+			<p:commandButton value="Bergung melden"
+                 action="#{ghostNetBean.netzAuswaehlen(netz.id)}"
+                 oncomplete="PF('bergungDialog').show()"
+                 update="@form"/>
+		</h:column>
+	</h:dataTable>
+		
+		
+
+		<!-- Dialog für Bergungsanmeldung -->
+		<p:dialog header="Bergung melden" widgetVar="bergungDialog"
+			modal="true">
+				<!-- Name der bergenden Person -->
+				<h:outputLabel value="Name:" />
+				<h:inputText value="#{ghostNetBean.bergendePersonName}" />
+				<br />
+				<!-- Telefonnummer der bergenden Person -->
+				<h:outputLabel value="Telefon:" />
+				<h:inputText value="#{ghostNetBean.bergendePersonTelefon}" />
+				<br />
+				<p:commandButton value="Speichern"
+                 action="#{ghostNetBean.bergungMelden(ghostNetBean.ausgewaehltesNetzId)}"
+                 oncomplete="PF('bergungDialog').hide()"
+                 update="netzFormular"/>
+		</p:dialog>
+	
+	</h:form>
+	
 </h:body>
 </html>

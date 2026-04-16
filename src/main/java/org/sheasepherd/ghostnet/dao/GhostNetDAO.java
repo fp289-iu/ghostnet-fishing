@@ -12,6 +12,16 @@ import jakarta.transaction.Transactional;
 @ApplicationScoped
 public class GhostNetDAO {
 	
+	// sucht ein Geisternetz anhand seiner ID
+	public GhostNet findById(Long id) {
+	    return em.find(GhostNet.class, id);
+	}	
+	
+	// Aktualisiert ein bestehendes Geisternetz in der Datenbank
+	@Transactional
+	public GhostNet aktualisieren(GhostNet netz) {
+	    return em.merge(netz);
+	}
 	
 	public List<GhostNet> zuBergendeNetze() {
 	    return em.createQuery(

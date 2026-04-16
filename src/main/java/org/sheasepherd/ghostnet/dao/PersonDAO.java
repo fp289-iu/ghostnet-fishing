@@ -16,11 +16,13 @@ public class PersonDAO {
 	 @PersistenceContext(unitName = "ghostnetPU")
 	    private EntityManager em;
 
+	 	// Methode zum speichern der Person
 	    @Transactional
 	    public void speichern(Person person) {
 	        em.persist(person);
 	    }
 
+	    // Methode zum Person erstellen, falls sie noch nicht existiert
 	    @Transactional
 	    public Person findenOderErstellen(String name, String telefon, Typ typ) {
 	        List<Person> result = em.createQuery(

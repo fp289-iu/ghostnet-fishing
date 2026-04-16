@@ -29,6 +29,7 @@ public class MeldeBean {
     private String name;
     private String telefon;
 
+    // 
     public String meldenAction() {
         // Person anlegen
         Person person = null;
