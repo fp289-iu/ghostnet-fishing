@@ -83,7 +83,7 @@ public class GhostNetBean implements Serializable{
 
 	
 	// Setzt den Status des Geisternetzes auf VERSCHOLLEN (User Story 7)
-	public String alsVerschollenMelden() {
+	public String alsVerschollenMelden() { 
 	    // Person anlegen oder finden
 	    Person person = personDAO.findenOderErstellen(
 	        verschollenPersonName, verschollenPersonTelefon, Person.Typ.MELDEND);
