@@ -80,12 +80,18 @@ public class GhostNetBean implements Serializable{
 	    alleNetze = null; //cache leeren
 	    return null;
 	}
+
 	
 	// Setzt den Status des Geisternetzes auf VERSCHOLLEN (User Story 7)
 	public String alsVerschollenMelden() {
-	    personDAO.findenOderErstellen(
+	    // Person anlegen oder finden
+	    Person person = personDAO.findenOderErstellen(
 	        verschollenPersonName, verschollenPersonTelefon, Person.Typ.MELDEND);
-	    ghostNetDAO.statusAendern(verschollenNetzId, GhostNet.Status.VERSCHOLLEN);
+	    // Person dem Netz zuweisen und Status setzen
+	    GhostNet netz = ghostNetDAO.findById(verschollenNetzId);
+	    netz.setVerschollenePerson(person);
+	    netz.setStatus(GhostNet.Status.VERSCHOLLEN);
+	    ghostNetDAO.aktualisieren(netz);
 	    alleNetze = null;
 	    return null;
 	}

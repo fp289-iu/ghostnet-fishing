@@ -8,67 +8,75 @@ import java.time.LocalDateTime;
 @Table(name = "ghost_net")
 public class GhostNet implements Serializable {
 
-    public enum Status {
-        GEMELDET,
-        BERGUNG_BEVORSTEHEND,
-        GEBORGEN,
-        VERSCHOLLEN
-    }
+	public enum Status {
+		GEMELDET, BERGUNG_BEVORSTEHEND, GEBORGEN, VERSCHOLLEN
+	}
 
-    public enum Groesse {
-        KLEIN,
-        MITTEL,
-        GROSS
-    }
+	public enum Groesse {
+		KLEIN, MITTEL, GROSS
+	}
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(nullable = false)
-    private Double latitude;
+	@Column(nullable = false)
+	private Double latitude;
 
-    @Column(nullable = false)
-    private Double longitude;
+	@Column(nullable = false)
+	private Double longitude;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Groesse groesse;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private Groesse groesse;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Status status = Status.GEMELDET;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private Status status = Status.GEMELDET;
 
-    @Column(name = "erstellt_am")
-    private LocalDateTime erstelltAm = LocalDateTime.now();
-    
- // Meldende Person (ist nullable, da Person anonym sein kann)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "meldende_person_id")
-    private Person meldendePerson;
+	@Column(name = "erstellt_am")
+	private LocalDateTime erstelltAm = LocalDateTime.now();
 
-    // Bergende Person (maximal eine pro Netz)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bergende_person_id")
-    private Person bergendePerson;
-    
+	// Meldende Person (ist nullable, da Person anonym sein kann)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "meldende_person_id")
+	private Person meldendePerson;
 
-    // Konstruktoren
+	// Bergende Person (maximal eine pro Netz)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "bergende_person_id")
+	private Person bergendePerson;
 
-    public GhostNet() {}
+	// Person die das Netz als verschollen gemeldet hat
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "verschollene_person_id")
+	private Person verschollenePerson;
 
-    public GhostNet(Double latitude, Double longitude, Groesse groesse) {
-        this.latitude  = latitude;
-        this.longitude = longitude;
-        this.groesse   = groesse;
-        this.status    = Status.GEMELDET;
-        this.erstelltAm = LocalDateTime.now();
-    }
-    
-    // Getter und Setter
+	// Konstruktoren
+
+	public GhostNet() {
+	}
+
+	public GhostNet(Double latitude, Double longitude, Groesse groesse) {
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.groesse = groesse;
+		this.status = Status.GEMELDET;
+		this.erstelltAm = LocalDateTime.now();
+	}
+
+	// Getter und Setter
 
 	public Long getId() {
 		return id;
+	}
+
+	public Person getVerschollenePerson() {
+		return verschollenePerson;
+	}
+
+	public void setVerschollenePerson(Person verschollenePerson) {
+		this.verschollenePerson = verschollenePerson;
 	}
 
 	public void setId(Long id) {
@@ -130,7 +138,5 @@ public class GhostNet implements Serializable {
 	public void setBergendePerson(Person bergendePerson) {
 		this.bergendePerson = bergendePerson;
 	}
-    
-    
-    
+
 }

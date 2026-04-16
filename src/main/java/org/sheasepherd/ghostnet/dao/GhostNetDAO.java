@@ -45,7 +45,11 @@ public class GhostNetDAO {
 	// Gibt eine Liste der noch zu bergenden Netze (Status Gemeldet oder Bergung_Bevorstehend)
 	public List<GhostNet> alleNetze() {
 	    return em.createQuery(
-	        "SELECT g FROM GhostNet g ORDER BY g.erstelltAm ASC",
+	        "SELECT g FROM GhostNet g " +
+	        "LEFT JOIN FETCH g.meldendePerson " +
+	        "LEFT JOIN FETCH g.bergendePerson " +
+	        "LEFT JOIN FETCH g.verschollenePerson " +
+	        "ORDER BY g.erstelltAm ASC",
 	        GhostNet.class)
 	        .getResultList();
 	}

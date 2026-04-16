@@ -40,6 +40,24 @@
             #{netz.status}
         </h:column>
 
+			<!-- Meldende Person -->
+			<h:column>
+				<f:facet name="header">Gemeldet von</f:facet>
+  			  #{netz.meldendePerson != null ? netz.meldendePerson.name : 'Anonym'}
+		</h:column>
+
+			<!-- Bergende Person -->
+			<h:column>
+				<f:facet name="header">Geborgen von</f:facet>
+   			 #{netz.bergendePerson != null ? netz.bergendePerson.name : '-'}
+		</h:column>
+
+			<!-- Verschollen gemeldet von -->
+			<h:column>
+				<f:facet name="header">Verschollen gemeldet von</f:facet>
+ 			  #{netz.verschollenePerson != null ? netz.verschollenePerson.name : '-'}
+		</h:column>
+
 			<!-- Button öffnet Dialog zur Angabe der Persondaten-->
 			<h:column>
 				<f:facet name="header">Aktionen</f:facet>
