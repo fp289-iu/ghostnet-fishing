@@ -20,7 +20,7 @@ public class GhostNetDAO {
 	    return em.find(GhostNet.class, id);
 	}	
 	
-	// Lädt ein Geisternetz mit der bergenden Person (eager)
+	// Lädt ein Geisternetz mit der bergenden Person (um lazyloading und error zu vermeiden wird hier eager loading verwendet)
 	public GhostNet findByIdMitPerson(Long id) {
 	    return em.createQuery(
 	        "SELECT g FROM GhostNet g LEFT JOIN FETCH g.bergendePerson WHERE g.id = :id",

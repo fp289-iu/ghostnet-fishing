@@ -45,19 +45,26 @@
 				<f:facet name="header">Aktionen</f:facet>
 
 
-				<!-- Button um Person für Netzbergung einzutragen (User Story 2) -->
+				<!-- Button um Person für Netzbergung einzutragen - bei GEMELDET(User Story 2) -->
 				<h:panelGroup rendered="#{netz.status == 'GEMELDET'}">
 					<p:commandButton value="Bergen"
 						action="#{ghostNetBean.netzAuswaehlen(netz.id)}"
 						oncomplete="PF('bergungDialog').show()" update="netzFormular" />
 				</h:panelGroup>
 
-				<!--   Button um Netz als geborgen zu melden (User Story 4) -->
+				<!--   Button um Netz als geborgen zu melden - bei BERGUNG_BEVORSTEHEND (User Story 4) -->
 				<h:panelGroup rendered="#{netz.status == 'BERGUNG_BEVORSTEHEND'}">
 					<p:commandButton value="Geborgen"
 						action="#{ghostNetBean.netzFuerBestaetigungAuswaehlen(netz.id)}"
 						oncomplete="PF('bestaetigungDialogVar').show()"
 						update="netzFormular" />
+				</h:panelGroup>
+				<!-- Button zum Verschollen melden - bei GEMELDET oder BERGUNG_BEVORSTEHEND -->
+				<h:panelGroup
+					rendered="#{netz.status == 'GEMELDET' or netz.status == 'BERGUNG_BEVORSTEHEND'}">
+					<p:commandButton value="Verschollen"
+						action="#{ghostNetBean.netzFuerVerschollenAuswaehlen(netz.id)}"
+						oncomplete="PF('verschollenDialog').show()" update="netzFormular" />
 				</h:panelGroup>
 
 			</h:column>
@@ -91,6 +98,24 @@
 				update="netzFormular" />
 			<p:commandButton value="Abbrechen"
 				onclick="PF('bestaetigungDialogVar').hide()" type="button" />
+		</p:dialog>
+
+		<!-- Dialog für Verschollen-Meldung (User Story 7) -->
+		<p:dialog header="Netz als verschollen melden"
+			widgetVar="verschollenDialog" modal="true">
+			<!-- Name der meldenden Person -->
+			<h:outputLabel value="Name:" />
+			<h:inputText value="#{ghostNetBean.verschollenPersonName}" />
+			<br />
+			<!-- Telefonnummer der meldenden Person -->
+			<h:outputLabel value="Telefon:" />
+			<h:inputText value="#{ghostNetBean.verschollenPersonTelefon}" />
+			<br />
+			<p:commandButton value="Als verschollen melden"
+				action="#{ghostNetBean.alsVerschollenMelden()}"
+				oncomplete="PF('verschollenDialog').hide()" update="netzFormular" />
+			<p:commandButton value="Abbrechen"
+				onclick="PF('verschollenDialog').hide()" type="button" />
 		</p:dialog>
 
 	</h:form>

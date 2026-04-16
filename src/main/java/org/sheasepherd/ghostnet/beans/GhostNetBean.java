@@ -32,6 +32,18 @@ public class GhostNetBean implements Serializable{
 	//Speichert die ID des ausgewählten Netzes für den Popup Dialog
 	private Long ausgewaehltesNetzId;
 	
+	// Felder für Verschollen-Meldung (User Story 7)
+	private String verschollenPersonName;
+	private String verschollenPersonTelefon;
+	
+	// Speichert die ID des ausgewählten Netzes für den Verschollen-Dialog
+	private Long verschollenNetzId;
+	
+	// Öffnet den Verschollen-Dialog für das gewählte Netz
+	public void netzFuerVerschollenAuswaehlen(Long netzId) {
+	    verschollenNetzId = netzId;
+	}
+	
 	// methode zum öffnen des Dialogs am gewählten netz
 	public void netzAuswaehlen(Long netzId) {
 		this.ausgewaehltesNetzId = netzId;
@@ -68,6 +80,15 @@ public class GhostNetBean implements Serializable{
 	    alleNetze = null; //cache leeren
 	    return null;
 	}
+	
+	// Setzt den Status des Geisternetzes auf VERSCHOLLEN (User Story 7)
+	public String alsVerschollenMelden() {
+	    personDAO.findenOderErstellen(
+	        verschollenPersonName, verschollenPersonTelefon, Person.Typ.MELDEND);
+	    ghostNetDAO.statusAendern(verschollenNetzId, GhostNet.Status.VERSCHOLLEN);
+	    alleNetze = null;
+	    return null;
+	}
 
 
 	@Inject
@@ -87,6 +108,30 @@ public class GhostNetBean implements Serializable{
 
 	public String getBergendePersonName() {
 		return bergendePersonName;
+	}
+
+	public String getVerschollenPersonName() {
+		return verschollenPersonName;
+	}
+
+	public void setVerschollenPersonName(String verschollenPersonName) {
+		this.verschollenPersonName = verschollenPersonName;
+	}
+
+	public String getVerschollenPersonTelefon() {
+		return verschollenPersonTelefon;
+	}
+
+	public void setVerschollenPersonTelefon(String verschollenPersonTelefon) {
+		this.verschollenPersonTelefon = verschollenPersonTelefon;
+	}
+
+	public Long getVerschollenNetzId() {
+		return verschollenNetzId;
+	}
+
+	public void setVerschollenNetzId(Long verschollenNetzId) {
+		this.verschollenNetzId = verschollenNetzId;
 	}
 
 	public String getBergendePersonNameAnzeige() {
