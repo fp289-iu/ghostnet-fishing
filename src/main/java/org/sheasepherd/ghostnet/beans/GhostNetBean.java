@@ -95,6 +95,9 @@ public class GhostNetBean implements Serializable{
 	    alleNetze = null;
 	    return null;
 	}
+	
+	// Gefilterte Netzliste für die Tabelle
+	private List<GhostNet> gefilterteNetze;
 
 
 	@Inject
@@ -111,7 +114,14 @@ public class GhostNetBean implements Serializable{
 	
 
 	// Getter und Setter
-
+	
+	public List<GhostNet> getGefilterteNetze() {
+	    return gefilterteNetze;
+	}
+	public void setGefilterteNetze(List<GhostNet> gefilterteNetze) {
+	    this.gefilterteNetze = gefilterteNetze;
+	}
+	
 	public String getBergendePersonName() {
 		return bergendePersonName;
 	}

@@ -14,53 +14,69 @@
 	<h:form id="netzFormular">
 
 		<!--  Tabelle aller Geisternetze -->
-		<h:dataTable value="#{ghostNetBean.alleNetze}" var="netz" border="1">
+		<p:dataTable value="#{ghostNetBean.alleNetze}" var="netz" border="1"
+			filteredValue="#{ghostNetBean.gefilterteNetze}" sortMode="single"
+			widgetVar="netzTable">
 
 			<!--  Eindeutige ID des Geisternetzes -->
-			<h:column>
-				<f:facet name="header">ID</f:facet>
-            #{netz.id}
-        </h:column>
+			<p:column headerText="ID" sortBy="#{netz.id}"
+				filterMatchMode="contains">
+    #{netz.id}
+</p:column>
 
 			<!-- Koordinaten des Netzes  -->
-			<h:column>
-				<f:facet name="header">Koordinaten</f:facet>
-            #{netz.latitude}, #{netz.longitude}
-        </h:column>
+			<p:column headerText="Koordinaten" filterMatchMode="contains">
+    #{netz.latitude}, #{netz.longitude}
+</p:column>
 
 			<!-- Geschätzte Grösse des Netzes  -->
-			<h:column>
-				<f:facet name="header">Größe</f:facet>
-            #{netz.groesse}
-        </h:column>
+			<p:column headerText="Größe" sortBy="#{netz.groesse}"
+				filterBy="#{netz.groesse}" filterMatchMode="exact">
+				<f:facet name="filter">
+					<p:selectOneMenu onchange="PF('netzTable').filter()"
+						style="width:100%">
+						<f:selectItem itemLabel="Alle" itemValue="" />
+						<f:selectItem itemLabel="KLEIN" itemValue="KLEIN" />
+						<f:selectItem itemLabel="MITTEL" itemValue="MITTEL" />
+						<f:selectItem itemLabel="GROSS" itemValue="GROSS" />
+					</p:selectOneMenu>
+				</f:facet>
+    #{netz.groesse}
+</p:column>
 
 			<!--  aktueller Status des Geisternetzes -->
-			<h:column>
-				<f:facet name="header">Status</f:facet>
-            #{netz.status}
-        </h:column>
+			<p:column headerText="Status" sortBy="#{netz.status}"
+				filterBy="#{netz.status}" filterMatchMode="exact">
+				<f:facet name="filter">
+					<p:selectOneMenu onchange="PF('netzTable').filter()"
+						style="width:100%">
+						<f:selectItem itemLabel="Alle" itemValue="" />
+						<f:selectItem itemLabel="GEMELDET" itemValue="GEMELDET" />
+						<f:selectItem itemLabel="BERGUNG_BEVORSTEHEND"
+							itemValue="BERGUNG_BEVORSTEHEND" />
+						<f:selectItem itemLabel="GEBORGEN" itemValue="GEBORGEN" />
+						<f:selectItem itemLabel="VERSCHOLLEN" itemValue="VERSCHOLLEN" />
+					</p:selectOneMenu>
+				</f:facet>
+    #{netz.status}
+</p:column>
 
-			<!-- Meldende Person -->
-			<h:column>
-				<f:facet name="header">Gemeldet von</f:facet>
-  			  #{netz.meldendePerson != null ? netz.meldendePerson.name : 'Anonym'}
-		</h:column>
+			<p:column headerText="Gemeldet von">
+    #{netz.meldendePerson != null ? netz.meldendePerson.name : 'Anonym'}
+</p:column>
 
 			<!-- Bergende Person -->
-			<h:column>
-				<f:facet name="header">Geborgen von</f:facet>
-   			 #{netz.bergendePerson != null ? netz.bergendePerson.name : '-'}
-		</h:column>
+			<p:column headerText="Geborgen von">
+    #{netz.bergendePerson != null ? netz.bergendePerson.name : '-'}
+</p:column>
 
 			<!-- Verschollen gemeldet von -->
-			<h:column>
-				<f:facet name="header">Verschollen gemeldet von</f:facet>
- 			  #{netz.verschollenePerson != null ? netz.verschollenePerson.name : '-'}
-		</h:column>
+			<p:column headerText="Verschollen gemeldet von">
+    #{netz.verschollenePerson != null ? netz.verschollenePerson.name : '-'}
+</p:column>
 
 			<!-- Button öffnet Dialog zur Angabe der Persondaten-->
-			<h:column>
-				<f:facet name="header">Aktionen</f:facet>
+			<p:column headerText="Aktionen">
 
 
 				<!-- Button um Person für Netzbergung einzutragen - bei GEMELDET(User Story 2) -->
@@ -85,8 +101,8 @@
 						oncomplete="PF('verschollenDialog').show()" update="netzFormular" />
 				</h:panelGroup>
 
-			</h:column>
-		</h:dataTable>
+			</p:column>
+		</p:dataTable>
 
 		<!-- Dialog für Bergungsanmeldung -->
 		<p:dialog header="Bergung melden" widgetVar="bergungDialog"
