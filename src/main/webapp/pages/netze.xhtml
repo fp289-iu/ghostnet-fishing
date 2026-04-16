@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Geisternetze - Shea Sepherd</title>
+</h:head>
+<h:body>
+    <h1>Zu bergende Geisternetze</h1>
+    <a href="/ghostnet/">Startseite</a> |
+    <a href="/ghostnet/pages/melden.xhtml">Neues Netz melden</a>
+
+    <h:dataTable value="#{ghostNetBean.zuBergendeNetze}" var="netz"
+                 border="1">
+        <h:column>
+            <f:facet name="header">ID</f:facet>
+            #{netz.id}
+        </h:column>
+        <h:column>
+            <f:facet name="header">Koordinaten</f:facet>
+            #{netz.latitude}, #{netz.longitude}
+        </h:column>
+        <h:column>
+            <f:facet name="header">Größe</f:facet>
+            #{netz.groesse}
+        </h:column>
+        <h:column>
+            <f:facet name="header">Status</f:facet>
+            #{netz.status}
+        </h:column>
+    </h:dataTable>
+</h:body>
+</html>
