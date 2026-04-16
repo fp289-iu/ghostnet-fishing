@@ -11,11 +11,30 @@ import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class GhostNetDAO {
+
+    @PersistenceContext(unitName = "ghostnetPU")
+    private EntityManager em;
 	
 	// sucht ein Geisternetz anhand seiner ID
 	public GhostNet findById(Long id) {
 	    return em.find(GhostNet.class, id);
 	}	
+	
+	// Lädt ein Geisternetz mit der bergenden Person (eager)
+	public GhostNet findByIdMitPerson(Long id) {
+	    return em.createQuery(
+	        "SELECT g FROM GhostNet g LEFT JOIN FETCH g.bergendePerson WHERE g.id = :id",
+	        GhostNet.class)
+	        .setParameter("id", id)
+	        .getSingleResult();
+	}
+	
+	// Ändert den Status eines Geisternetzes direkt in der Datenbank
+	@Transactional
+	public void statusAendern(Long netzId, GhostNet.Status neuerStatus) {
+	    GhostNet netz = em.find(GhostNet.class, netzId);
+	    netz.setStatus(neuerStatus);
+	}
 	
 	// Aktualisiert ein bestehendes Geisternetz in der Datenbank
 	@Transactional
@@ -23,17 +42,13 @@ public class GhostNetDAO {
 	    return em.merge(netz);
 	}
 	
-	public List<GhostNet> zuBergendeNetze() {
+	// Gibt eine Liste der noch zu bergenden Netze (Status Gemeldet oder Bergung_Bevorstehend)
+	public List<GhostNet> alleNetze() {
 	    return em.createQuery(
-	        "SELECT g FROM GhostNet g WHERE g.status IN (:s1, :s2) ORDER BY g.erstelltAm ASC",
+	        "SELECT g FROM GhostNet g ORDER BY g.erstelltAm ASC",
 	        GhostNet.class)
-	        .setParameter("s1", GhostNet.Status.GEMELDET)
-	        .setParameter("s2", GhostNet.Status.BERGUNG_BEVORSTEHEND)
 	        .getResultList();
 	}
-
-    @PersistenceContext(unitName = "ghostnetPU")
-    private EntityManager em;
 
     @Transactional
     public void speichern(GhostNet netz) {

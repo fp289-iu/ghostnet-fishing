@@ -22,14 +22,29 @@ public class GhostNetBean implements Serializable{
 	// Felder für Meldung von Netz von einer Person
 	private String bergendePersonName;
 	private String bergendePersonTelefon;
+
+	//Speichert das ausgewählte Netz für den Bestätigungsdialog beim als geborgen melden (User Story 4)
+	private GhostNet ausgewaehltesNetz;
+	
+	// Name der bergenden Person für den Bestätigungsdialog
+	private String bergendePersonNameAnzeige;
 	
 	//Speichert die ID des ausgewählten Netzes für den Popup Dialog
 	private Long ausgewaehltesNetzId;
 	
+	// methode zum öffnen des Dialogs am gewählten netz
 	public void netzAuswaehlen(Long netzId) {
 		this.ausgewaehltesNetzId = netzId;
 	}
+	
+	// Speichert das ausgewählte Netz und öffnet den Bestätigungsdialog
+	public void netzFuerBestaetigungAuswaehlen(Long netzId) {
+	    ausgewaehltesNetzId = netzId;
+	    ausgewaehltesNetz = ghostNetDAO.findByIdMitPerson(netzId);
+	    bergendePersonNameAnzeige = ausgewaehltesNetz.getBergendePerson().getName();
+	}
 
+	// Methode um Person für Netzbergung einzutragen (User Story 2)
 	public String bergungMelden(Long netzId) {
 	    GhostNet netz = ghostNetDAO.findById(netzId);
 	    
@@ -43,7 +58,14 @@ public class GhostNetBean implements Serializable{
 	    netz.setStatus(GhostNet.Status.BERGUNG_BEVORSTEHEND);
 	    ghostNetDAO.aktualisieren(netz);
 	    
-	    zuBergendeNetze = null; // Cache leeren
+	    alleNetze = null; // Cache leeren
+	    return null;
+	}
+	
+	// Setzt den Status des Geisternetzes auf GEBORGEN (User Story 4)
+	public String alsGeborgenMelden(Long netzId) {
+	    ghostNetDAO.statusAendern(netzId, GhostNet.Status.GEBORGEN);
+	    alleNetze = null; //cache leeren
 	    return null;
 	}
 
@@ -51,13 +73,13 @@ public class GhostNetBean implements Serializable{
 	@Inject
 	private GhostNetDAO ghostNetDAO;
 	
-	private List<GhostNet> zuBergendeNetze;
+	private List<GhostNet> alleNetze;
 	
-	public List<GhostNet> getZuBergendeNetze() {
-		if (zuBergendeNetze == null) {
-			zuBergendeNetze = ghostNetDAO.zuBergendeNetze();
+	public List<GhostNet> getAlleNetze() {
+		if (alleNetze == null) {
+			alleNetze = ghostNetDAO.alleNetze();
 		}
-		return zuBergendeNetze;
+		return alleNetze;
 	}
 	
 
@@ -65,6 +87,26 @@ public class GhostNetBean implements Serializable{
 
 	public String getBergendePersonName() {
 		return bergendePersonName;
+	}
+
+	public String getBergendePersonNameAnzeige() {
+		return bergendePersonNameAnzeige;
+	}
+
+	public void setBergendePersonNameAnzeige(String bergendePersonNameAnzeige) {
+		this.bergendePersonNameAnzeige = bergendePersonNameAnzeige;
+	}
+
+	public GhostNet getAusgewaehltesNetz() {
+		return ausgewaehltesNetz;
+	}
+
+	public void setAusgewaehltesNetz(GhostNet ausgewaehltesNetz) {
+		this.ausgewaehltesNetz = ausgewaehltesNetz;
+	}
+
+	public void setAlleNetze(List<GhostNet> alleNetze) {
+		this.alleNetze = alleNetze;
 	}
 
 	public Long getAusgewaehltesNetzId() {
@@ -89,8 +131,8 @@ public class GhostNetBean implements Serializable{
 		this.bergendePersonTelefon = bergendePersonTelefon;
 	}
 
-	public void setZuBergendeNetze(List<GhostNet> zuBergendeNetze) {
-		this.zuBergendeNetze = zuBergendeNetze;
+	public void setalleNetze(List<GhostNet> alleNetze) {
+		this.alleNetze = alleNetze;
 	}
 	
 }

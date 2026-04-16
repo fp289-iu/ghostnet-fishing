@@ -7,70 +7,93 @@
 	<title>Geisternetze - Shea Sepherd</title>
 </h:head>
 <h:body>
-	<h1>Zu bergende Geisternetze</h1>
+	<h1>Alle Geisternetze</h1>
 	<a href="/ghostnet/">Startseite</a> |
     <a href="/ghostnet/pages/melden.xhtml">Neues Netz melden</a>
-    
-    <h:form id="netzFormular">
 
-	<!--  Tabelle aller zu bergenden Geisternetze -->
-	<h:dataTable value="#{ghostNetBean.zuBergendeNetze}" var="netz"
-		border="1">
+	<h:form id="netzFormular">
 
-		<!--  Eindeutige ID des Geisternetzes -->
-		<h:column>
-			<f:facet name="header">ID</f:facet>
+		<!--  Tabelle aller Geisternetze -->
+		<h:dataTable value="#{ghostNetBean.alleNetze}" var="netz" border="1">
+
+			<!--  Eindeutige ID des Geisternetzes -->
+			<h:column>
+				<f:facet name="header">ID</f:facet>
             #{netz.id}
         </h:column>
 
-		<!-- Koordinaten des Netzes  -->
-		<h:column>
-			<f:facet name="header">Koordinaten</f:facet>
+			<!-- Koordinaten des Netzes  -->
+			<h:column>
+				<f:facet name="header">Koordinaten</f:facet>
             #{netz.latitude}, #{netz.longitude}
         </h:column>
 
-		<!-- Geschätzte Grösse des Netzes  -->
-		<h:column>
-			<f:facet name="header">Größe</f:facet>
+			<!-- Geschätzte Grösse des Netzes  -->
+			<h:column>
+				<f:facet name="header">Größe</f:facet>
             #{netz.groesse}
         </h:column>
 
-		<!--  aktueller Status des Geisternetzes -->
-		<h:column>
-			<f:facet name="header">Status</f:facet>
+			<!--  aktueller Status des Geisternetzes -->
+			<h:column>
+				<f:facet name="header">Status</f:facet>
             #{netz.status}
         </h:column>
 
-		<!-- Button öffnet Dialog zur Angabe der Persondaten-->
-		<h:column>
-			<f:facet name="header">Aktionen</f:facet>
-			<p:commandButton value="Bergung melden"
-                 action="#{ghostNetBean.netzAuswaehlen(netz.id)}"
-                 oncomplete="PF('bergungDialog').show()"
-                 update="@form"/>
-		</h:column>
-	</h:dataTable>
-		
-		
+			<!-- Button öffnet Dialog zur Angabe der Persondaten-->
+			<h:column>
+				<f:facet name="header">Aktionen</f:facet>
+
+
+				<!-- Button um Person für Netzbergung einzutragen (User Story 2) -->
+				<h:panelGroup rendered="#{netz.status == 'GEMELDET'}">
+					<p:commandButton value="Bergen"
+						action="#{ghostNetBean.netzAuswaehlen(netz.id)}"
+						oncomplete="PF('bergungDialog').show()" update="netzFormular" />
+				</h:panelGroup>
+
+				<!--   Button um Netz als geborgen zu melden (User Story 4) -->
+				<h:panelGroup rendered="#{netz.status == 'BERGUNG_BEVORSTEHEND'}">
+					<p:commandButton value="Geborgen"
+						action="#{ghostNetBean.netzFuerBestaetigungAuswaehlen(netz.id)}"
+						oncomplete="PF('bestaetigungDialogVar').show()"
+						update="netzFormular" />
+				</h:panelGroup>
+
+			</h:column>
+		</h:dataTable>
 
 		<!-- Dialog für Bergungsanmeldung -->
 		<p:dialog header="Bergung melden" widgetVar="bergungDialog"
 			modal="true">
-				<!-- Name der bergenden Person -->
-				<h:outputLabel value="Name:" />
-				<h:inputText value="#{ghostNetBean.bergendePersonName}" />
-				<br />
-				<!-- Telefonnummer der bergenden Person -->
-				<h:outputLabel value="Telefon:" />
-				<h:inputText value="#{ghostNetBean.bergendePersonTelefon}" />
-				<br />
-				<p:commandButton value="Speichern"
-                 action="#{ghostNetBean.bergungMelden(ghostNetBean.ausgewaehltesNetzId)}"
-                 oncomplete="PF('bergungDialog').hide()"
-                 update="netzFormular"/>
+			<!-- Name der bergenden Person -->
+			<h:outputLabel value="Name:" />
+			<h:inputText value="#{ghostNetBean.bergendePersonName}" />
+			<br />
+			<!-- Telefonnummer der bergenden Person -->
+			<h:outputLabel value="Telefon:" />
+			<h:inputText value="#{ghostNetBean.bergendePersonTelefon}" />
+			<br />
+			<p:commandButton value="Speichern"
+				action="#{ghostNetBean.bergungMelden(ghostNetBean.ausgewaehltesNetzId)}"
+				oncomplete="PF('bergungDialog').hide()" update="netzFormular" />
 		</p:dialog>
-	
+
+		<!--  Bestätigungsdialog zum geborgen Melden (User Story 4) -->
+		<p:dialog header="Bergung bestätigen"
+			widgetVar="bestaetigungDialogVar" modal="true">
+			<h:outputText
+				value="Netz als geborgen melden? Eingetragene Person: #{ghostNetBean.bergendePersonNameAnzeige}" />
+			<br />
+			<p:commandButton value="Ja"
+				action="#{ghostNetBean.alsGeborgenMelden(ghostNetBean.ausgewaehltesNetzId)}"
+				oncomplete="PF('bestaetigungDialogVar').hide()"
+				update="netzFormular" />
+			<p:commandButton value="Abbrechen"
+				onclick="PF('bestaetigungDialogVar').hide()" type="button" />
+		</p:dialog>
+
 	</h:form>
-	
+
 </h:body>
 </html>
