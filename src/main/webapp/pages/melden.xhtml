@@ -15,18 +15,22 @@
 		<br />
 
 		<h:form>
+
+			<!-- Validierungsmeldungen -->
+			<p:messages id="messages" showDetail="false" showSummary="true" redisplay="false"/>
+
 			<p:panelGrid columns="2" style="margin-bottom:10px">
 
 				<p:outputLabel value="Breitengrad (Latitude):" />
 				<p:inputText value="#{meldeBean.latitude}"
-					placeholder="-90 bis 90, z.B. 54.1234" required="true" />
+					placeholder="-90 bis 90, z.B. 54.1234" required="true" label="Breitengrad" requiredMessage="Breitengrad ist erforderlich"/>
 
 				<p:outputLabel value="Längengrad (Longitude):" />
 				<p:inputText value="#{meldeBean.longitude}"
-					placeholder="-180 bis 180, z.B. 12.5678" required="true" />
+					placeholder="-180 bis 180, z.B. 12.5678" required="true" label="Längengrad" requiredMessage="Längengrad ist erforderlich"/>
 
 				<p:outputLabel value="Geschätzte Größe:" />
-				<p:selectOneMenu value="#{meldeBean.groesse}" required="true">
+				<p:selectOneMenu value="#{meldeBean.groesse}" required="true" label="Größe" requiredMessage="Größe ist erforderlich">
 					<f:selectItem itemLabel="-- bitte wählen --" itemValue="" />
 					<f:selectItems value="#{meldeBean.groesseValues}" var="g"
 						itemLabel="#{g}" itemValue="#{g}" />
@@ -36,27 +40,27 @@
 				<p:selectBooleanCheckbox value="#{meldeBean.anonym}">
 					<p:ajax update="personFelder" />
 				</p:selectBooleanCheckbox>
-				
+
 			</p:panelGrid>
 
-		<!--  Name und Telefon außerhalb des Grids zum dynamisch ein-/ausblenden-->
-				<p:outputPanel id="personFelder">
-        <h:panelGroup rendered="#{!meldeBean.anonym}">
-            <p:panelGrid columns="2" style="margin-bottom:10px">
-                <p:outputLabel value="Name:"/>
-                <p:inputText value="#{meldeBean.name}"/>
+			<!--  Name und Telefon außerhalb des Grids zum dynamisch ein-/ausblenden-->
+			<p:outputPanel id="personFelder">
+				<h:panelGroup rendered="#{!meldeBean.anonym}">
+					<p:panelGrid columns="2" style="margin-bottom:10px">
+						<p:outputLabel value="Name:" />
+						<p:inputText value="#{meldeBean.name}" />
 
-                <p:outputLabel value="Telefonnummer:"/>
-                <p:inputText value="#{meldeBean.telefon}"/>
-            </p:panelGrid>
-        </h:panelGroup>
-    </p:outputPanel>
+						<p:outputLabel value="Telefonnummer:" />
+						<p:inputText value="#{meldeBean.telefon}" />
+					</p:panelGrid>
+				</h:panelGroup>
+			</p:outputPanel>
 
-			
+
 
 			<p:commandButton value="Geisternetz melden"
 				action="#{meldeBean.meldenAction}" icon="pi pi-check"
-				style="margin-right:10px" />
+				style="margin-right:10px" update="messages"/>
 			<p:button value="Abbrechen" outcome="/index" icon="pi pi-times"
 				styleClass="ui-button-secondary" style="margin-right:10px" />
 		</h:form>

@@ -8,6 +8,8 @@ import org.sheasepherd.ghostnet.model.GhostNet.Groesse;
 import org.sheasepherd.ghostnet.model.Person.Typ;
 
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
@@ -15,41 +17,53 @@ import jakarta.inject.Named;
 @RequestScoped
 public class MeldeBean {
 
-    @Inject
-    private GhostNetDAO ghostNetDAO;
+	@Inject
+	private GhostNetDAO ghostNetDAO;
 
-    @Inject
-    private PersonDAO personDAO;
+	@Inject
+	private PersonDAO personDAO;
 
-    // Formularfelder
-    private Double latitude;
-    private Double longitude;
-    private Groesse groesse;
-    private boolean anonym;
-    private String name;
-    private String telefon;
+	// Formularfelder
+	private Double latitude;
+	private Double longitude;
+	private Groesse groesse;
+	private boolean anonym;
+	private String name;
+	private String telefon;
 
-    // 
-    public String meldenAction() {
-        // Person anlegen
-        Person person = null;
-        if (!anonym) {
-            person = personDAO.findenOderErstellen(name, telefon, Typ.MELDEND);
-        }
+	// Method ezum Netz melden
+	public String meldenAction() {
+		// Validierung: Name und Telefon erforderlich wenn nicht anonym
+		if (!anonym && (name == null || name.trim().isEmpty()
+		             || telefon == null || telefon.trim().isEmpty())) {
+		    FacesContext.getCurrentInstance().addMessage(null,
+		        new FacesMessage(FacesMessage.SEVERITY_ERROR,
+		            "Bitte Name und Telefonnummer angeben oder anonym melden!", ""));
+		    return null;
+		}
+		
+		// Person anlegen
+		Person person = null;
+		if (!anonym) {
+			person = personDAO.findenOderErstellen(name, telefon, Typ.MELDEND);
+		}
 
-        // Geisternetz anlegen und speichern
-        GhostNet netz = new GhostNet(latitude, longitude, groesse);
-        netz.setMeldendePerson(person);
-        ghostNetDAO.speichern(netz);
+		// Geisternetz anlegen und speichern
+		GhostNet netz = new GhostNet(latitude, longitude, groesse);
+		netz.setMeldendePerson(person);
+		ghostNetDAO.speichern(netz);
+		
+		FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+		FacesContext.getCurrentInstance().addMessage(null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolg", "Geisternetz wurde erfolgreich gemeldet!"));
+		return "/pages/netze?faces-redirect=true";
+	}
 
-        return "pages/netze?faces-redirect=true";
-    }
-    
-    public Groesse[] getGroesseValues() {
-        return Groesse.values();
-    }
+	public Groesse[] getGroesseValues() {
+		return Groesse.values();
+	}
 
-    // Getter und Setter
+	// Getter und Setter
 
 	public GhostNetDAO getGhostNetDAO() {
 		return ghostNetDAO;
@@ -114,5 +128,5 @@ public class MeldeBean {
 	public void setTelefon(String telefon) {
 		this.telefon = telefon;
 	}
-    
+
 }

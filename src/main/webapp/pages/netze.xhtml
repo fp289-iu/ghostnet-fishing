@@ -9,6 +9,10 @@
 <h:body>
 	<p:panel header="Alle Geisternetze - Shea Sepherd">
 
+
+		<!-- Benachrichtigungen -->
+		<p:growl id="messages" showDetail="true" />
+
 		<p:button value="Startseite" outcome="/index" icon="pi pi-home"
 			styleClass="ui-button-secondary" style="margin-right:10px" />
 		<p:button value="Neues Netz melden" outcome="/pages/melden"
@@ -133,7 +137,7 @@
 			<!--  Bestätigungsdialog zum geborgen Melden (User Story 4) -->
 			<p:dialog header="Bergung bestätigen"
 				widgetVar="bestaetigungDialogVar" modal="true">
-				<div style="padding:0 15px 15px 15px; margin-top:-10px">
+				<div style="padding: 0 15px 15px 15px; margin-top: -10px">
 					<p>Netz als geborgen melden?</p>
 					<p>Eingetragene Person:
 						#{ghostNetBean.bergendePersonNameAnzeige}</p>
