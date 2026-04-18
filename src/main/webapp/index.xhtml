@@ -1,15 +1,25 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
 <h:head>
-    <title>Ghost Net Fishing</title>
+    <title>Ghost Net Fishing - Shea Sepherd</title>
 </h:head>
 <h:body>
-    <h1>Ghost Net Fishing</h1>
-    <p>Willkommen bei der Geisternetz-App der Organisation Shea Sepherd.</p>
-
-    <a href="/ghostnet/pages/melden.xhtml">Geisternetz melden</a>
-    <br/>
-    <a href="/ghostnet/pages/netze.xhtml">Netze zur Bergung</a>
+    <p:panel header="Ghost Net Fishing - Shea Sepherd">
+        <p>Willkommen bei der Geisternetz-App der Organisation Shea Sepherd.</p>
+        <p>Geisternetze sind herrenlose Fischernetze die im Meer treiben 
+           und eine Gefahr für Meereslebewesen darstellen. Diese Plattform bietet die Möglichkeit, geisternetze zu melden und managen</p>
+        <br/>
+        <p:button value="Geisternetz melden" 
+                  outcome="/pages/melden"
+                  icon="pi pi-plus"
+                  style="margin-right:10px"/>
+        <p:button value="Alle Geisternetze" 
+                  outcome="/pages/netze"
+                  icon="pi pi-list"
+                  styleClass="ui-button-secondary"
+                  style="margin-right:10px"/>
+    </p:panel>
 </h:body>
 </html>

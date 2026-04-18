@@ -1,43 +1,65 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
 <h:head>
-    <title>Geisternetz melden - Shea Sepherd</title>
+	<title>Geisternetz melden - Shea Sepherd</title>
 </h:head>
 <h:body>
-    <h1>Geisternetz melden</h1>
-    <a href="/ghostnet/">Zurück zur Startseite</a>
+	<p:panel header="Geisternetz melden">
 
-    <h:form>
-        <h:panelGrid columns="2">
-            <h:outputLabel value="Breitengrad (Latitude):"/>
-            <h:inputText value="#{meldeBean.latitude}" required="true"/>
+		<p:button value="Zurück" outcome="/index" icon="pi pi-arrow-left"
+			styleClass="ui-button-secondary" />
+		<br />
+		<br />
 
-            <h:outputLabel value="Längengrad (Longitude):"/>
-            <h:inputText value="#{meldeBean.longitude}" required="true"/>
+		<h:form>
+			<p:panelGrid columns="2" style="margin-bottom:10px">
 
-            <h:outputLabel value="Geschätzte Größe:"/>
-            <h:selectOneMenu value="#{meldeBean.groesse}" required="true">
-                <f:selectItem itemLabel="-- bitte wählen --" itemValue=""/>
-                <f:selectItems value="#{meldeBean.groesseValues}"
-               		var="g" itemLabel="#{g}" itemValue="#{g}"/>
-            </h:selectOneMenu>
+				<p:outputLabel value="Breitengrad (Latitude):" />
+				<p:inputText value="#{meldeBean.latitude}"
+					placeholder="-90 bis 90, z.B. 54.1234" required="true" />
 
-            <h:outputLabel value="Anonym melden:"/>
-            <h:selectBooleanCheckbox value="#{meldeBean.anonym}"/>
+				<p:outputLabel value="Längengrad (Longitude):" />
+				<p:inputText value="#{meldeBean.longitude}"
+					placeholder="-180 bis 180, z.B. 12.5678" required="true" />
 
-            <h:outputLabel value="Name:"/>
-            <h:inputText value="#{meldeBean.name}"/>
+				<p:outputLabel value="Geschätzte Größe:" />
+				<p:selectOneMenu value="#{meldeBean.groesse}" required="true">
+					<f:selectItem itemLabel="-- bitte wählen --" itemValue="" />
+					<f:selectItems value="#{meldeBean.groesseValues}" var="g"
+						itemLabel="#{g}" itemValue="#{g}" />
+				</p:selectOneMenu>
 
-            <h:outputLabel value="Telefonnummer:"/>
-            <h:inputText value="#{meldeBean.telefon}"/>
-        </h:panelGrid>
+				<p:outputLabel value="Anonym melden:" />
+				<p:selectBooleanCheckbox value="#{meldeBean.anonym}">
+					<p:ajax update="personFelder" />
+				</p:selectBooleanCheckbox>
+				
+			</p:panelGrid>
 
-        <h:commandButton value="Geisternetz melden" 
-                         action="#{meldeBean.meldenAction}"/>
-        <a href="/ghostnet/">Abbrechen</a>
-    </h:form>
+		<!--  Name und Telefon außerhalb des Grids zum dynamisch ein-/ausblenden-->
+				<p:outputPanel id="personFelder">
+        <h:panelGroup rendered="#{!meldeBean.anonym}">
+            <p:panelGrid columns="2" style="margin-bottom:10px">
+                <p:outputLabel value="Name:"/>
+                <p:inputText value="#{meldeBean.name}"/>
+
+                <p:outputLabel value="Telefonnummer:"/>
+                <p:inputText value="#{meldeBean.telefon}"/>
+            </p:panelGrid>
+        </h:panelGroup>
+    </p:outputPanel>
+
+			
+
+			<p:commandButton value="Geisternetz melden"
+				action="#{meldeBean.meldenAction}" icon="pi pi-check"
+				style="margin-right:10px" />
+			<p:button value="Abbrechen" outcome="/index" icon="pi pi-times"
+				styleClass="ui-button-secondary" style="margin-right:10px" />
+		</h:form>
+	</p:panel>
 </h:body>
 </html>
