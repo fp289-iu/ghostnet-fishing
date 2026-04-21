@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--  Definiert die Persistence Unit mit Hibernate als JPA-Provider und MySQL als Datenbank -->
 <persistence xmlns="https://jakarta.ee/xml/ns/persistence" version="3.0">
     <persistence-unit name="ghostnetPU" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <jta-data-source>ghostnetDS</jta-data-source>
 
+		<!--  Entity Klassen -->
         <class>org.sheashepherd.ghostnet.model.GhostNet</class>
         <class>org.sheashepherd.ghostnet.model.Person</class>
 
         <properties>
+        	<!-- MySQL Dialekt für Hibernate -->
             <property name="hibernate.dialect"
                       value="org.hibernate.dialect.MySQLDialect"/>
             <property name="hibernate.hbm2ddl.auto" value="none"/>
+            <!--  SQL ausgabe in der Konsole für debugging -->
             <property name="hibernate.show_sql" value="true"/>
         </properties>
     </persistence-unit>

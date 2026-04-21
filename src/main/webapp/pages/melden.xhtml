@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--  Meldeformular zum melden neuer GEisternetze -->
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
@@ -7,6 +8,7 @@
 	<title>Geisternetz melden - Shea Sepherd</title>
 </h:head>
 <h:body>
+	<!--  Hauptpanel mit Zurück Button und Eingabefelder -->
 	<p:panel header="Geisternetz melden">
 
 		<p:button value="Zurück" outcome="/index" icon="pi pi-arrow-left"
@@ -20,15 +22,15 @@
 			<p:messages id="messages" showDetail="false" showSummary="true" redisplay="false"/>
 
 			<p:panelGrid columns="2" style="margin-bottom:10px">
-
+				<!--  Breitengrad EIngabefeld (Pflichtfeld) -->
 				<p:outputLabel value="Breitengrad (Latitude):" />
 				<p:inputText value="#{meldeBean.latitude}"
 					placeholder="-90 bis 90, z.B. 54.1234" required="true" label="Breitengrad" requiredMessage="Breitengrad ist erforderlich"/>
-
+				<!--  Längengrad Eingabefeld (Pflichtfeld) -->
 				<p:outputLabel value="Längengrad (Longitude):" />
 				<p:inputText value="#{meldeBean.longitude}"
 					placeholder="-180 bis 180, z.B. 12.5678" required="true" label="Längengrad" requiredMessage="Längengrad ist erforderlich"/>
-
+				<!--  Größe EIngabefeld (Pflichtfeld) -->
 				<p:outputLabel value="Geschätzte Größe:" />
 				<p:selectOneMenu value="#{meldeBean.groesse}" required="true" label="Größe" requiredMessage="Größe ist erforderlich">
 					<f:selectItem itemLabel="-- bitte wählen --" itemValue="" />
@@ -36,6 +38,7 @@
 						itemLabel="#{g}" itemValue="#{g}" />
 				</p:selectOneMenu>
 
+				<!--  Checkbox als anonym melden -->
 				<p:outputLabel value="Anonym melden:" />
 				<p:selectBooleanCheckbox value="#{meldeBean.anonym}">
 					<p:ajax update="personFelder" />
@@ -43,7 +46,7 @@
 
 			</p:panelGrid>
 
-			<!--  Name und Telefon außerhalb des Grids zum dynamisch ein-/ausblenden-->
+			<!--  Name und Telefon außerhalb des Grids zum dynamisch ein-/ausblenden (Pflichtfeld, wenn anonym nicht angehakt)-->
 			<p:outputPanel id="personFelder">
 				<h:panelGroup rendered="#{!meldeBean.anonym}">
 					<p:panelGrid columns="2" style="margin-bottom:10px">
@@ -57,10 +60,11 @@
 			</p:outputPanel>
 
 
-
+			<!--  speichern Button zum anlegen -->
 			<p:commandButton value="Geisternetz melden"
 				action="#{meldeBean.meldenAction}" icon="pi pi-check"
 				style="margin-right:10px" update="messages"/>
+			<!--  Abbrechen Button (zurück zur startseite) -->
 			<p:button value="Abbrechen" outcome="/index" icon="pi pi-times"
 				styleClass="ui-button-secondary" style="margin-right:10px" />
 		</h:form>

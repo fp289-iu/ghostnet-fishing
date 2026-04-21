@@ -10,19 +10,25 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
+/* DAO-Klasse für den DAtenbankzugriff auf Personen
+ * Kapselt alle Persistenzoperationen für die person-Entity
+ * Wird von CDI-Beans per @Inject verwendet
+ */
 @ApplicationScoped
 public class PersonDAO {
 	
+	// EntityManager wird von TomEE injiziert und verwaltet die Datenbankverbindung
 	 @PersistenceContext(unitName = "ghostnetPU")
 	    private EntityManager em;
 
-	 	// Methode zum speichern der Person
+	 	// Methode zum speichern einer neuen person in der DB
 	    @Transactional
 	    public void speichern(Person person) {
 	        em.persist(person);
 	    }
 
 	    // Methode zum Person erstellen, falls sie noch nicht existiert
+	    // Sucht Person anhand von Name, Telefonnummer und Typ. Falls keine gefunden wird, wird eine neue angelegt
 	    @Transactional
 	    public Person findenOderErstellen(String name, String telefon, Typ typ) {
 	        List<Person> result = em.createQuery(

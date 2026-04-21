@@ -9,9 +9,15 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
+/**
+ * DAO-Klasse für den Datenbankzugriff auf Geisternetze.
+ * Kapselt alle JPQL-Abfragen und Persistenzoperationen für die GhostNet-Entity.
+ * Wird von den CDI-Beans per @Inject verwendet.
+ */
 @ApplicationScoped
 public class GhostNetDAO {
 
+	// EntityManager wird von TomEE injiziert und verwaltet die Datenbankverbindung
     @PersistenceContext(unitName = "ghostnetPU")
     private EntityManager em;
 	
@@ -42,7 +48,8 @@ public class GhostNetDAO {
 	    return em.merge(netz);
 	}
 	
-	// Gibt eine Liste der noch zu bergenden Netze (Status Gemeldet oder Bergung_Bevorstehend)
+	// Gibt alle GEisternetze zurück unabhängig vom Status
+	// Lädt alle zugeordneten personen per eager, um LazyInitializationExceptions bei der Darstellung zu vermeiden
 	public List<GhostNet> alleNetze() {
 	    return em.createQuery(
 	        "SELECT g FROM GhostNet g " +
@@ -54,6 +61,7 @@ public class GhostNetDAO {
 	        .getResultList();
 	}
 
+	// Speichert ein neues Geisternetz in der DB
     @Transactional
     public void speichern(GhostNet netz) {
         em.persist(netz);

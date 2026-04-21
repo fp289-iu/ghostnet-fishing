@@ -12,6 +12,11 @@ import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
+/**
+ * CDI-Bean für die Netzliste und alle Aktionen darauf
+ * Verwaltet die Tabellendaten und die Dialoge für Bergung, Geborgen- und Verschollen-Meldung.
+ * @ViewScoped bedeutet: die Bean bleibt aktiv solange der Nutzer auf der Seite ist.
+ */
 @Named
 @ViewScoped
 public class GhostNetBean implements Serializable{
@@ -100,11 +105,15 @@ public class GhostNetBean implements Serializable{
 	private List<GhostNet> gefilterteNetze;
 
 
+	// DAO für Datenbankoperationen auf Geisternetzen
 	@Inject
 	private GhostNetDAO ghostNetDAO;
 	
+	// Speichert die ID des ausgewählten Netzes und öffnet den Bergungsdialog
 	private List<GhostNet> alleNetze;
 	
+	// Gibt alle Geisternetze zurück
+	// Lädt die Liste nur einmal aus der DB und cached sie für weitere Aufrufe.
 	public List<GhostNet> getAlleNetze() {
 		if (alleNetze == null) {
 			alleNetze = ghostNetDAO.alleNetze();

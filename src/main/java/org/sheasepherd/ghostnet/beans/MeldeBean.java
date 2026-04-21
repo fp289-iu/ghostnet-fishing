@@ -13,13 +13,20 @@ import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
+/**
+ * CDI-Bean zum melden von Netzen
+ * Verwaltet die Formulardaten und steuert das Speichern eines neuen Geisternetzes.
+ * @RequestScoped bedeutet: eine neue Instanz pro HTTP-Request.
+ */
 @Named
 @RequestScoped
 public class MeldeBean {
 
+	// DAO für Datenbankoperationen auf Geisternetzen
 	@Inject
 	private GhostNetDAO ghostNetDAO;
 
+	// DAO für Datenbankoperationen auf Personen
 	@Inject
 	private PersonDAO personDAO;
 
@@ -31,7 +38,7 @@ public class MeldeBean {
 	private String name;
 	private String telefon;
 
-	// Method ezum Netz melden
+	// Methode zum Netz melden. Validiert EIngaben, legt ggf. eine neue Person an und speichert das Geisternetz
 	public String meldenAction() {
 		// Validierung: Name und Telefon erforderlich wenn nicht anonym
 		if (!anonym && (name == null || name.trim().isEmpty()
@@ -53,12 +60,14 @@ public class MeldeBean {
 		netz.setMeldendePerson(person);
 		ghostNetDAO.speichern(netz);
 		
+		//Meldung und weiterleitung zu Alle NEtze bei erfolg
 		FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 		FacesContext.getCurrentInstance().addMessage(null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolg", "Geisternetz wurde erfolgreich gemeldet!"));
 		return "/pages/netze?faces-redirect=true";
 	}
 
+	// Gibt alle möglichen Größenwerte für das Dropdown-Menü im Formular zurück
 	public Groesse[] getGroesseValues() {
 		return Groesse.values();
 	}

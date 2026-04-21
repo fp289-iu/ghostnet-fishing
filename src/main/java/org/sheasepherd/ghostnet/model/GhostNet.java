@@ -4,36 +4,55 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * JPA-Entity für ein Geisternetz.
+ * Bildet die Datenbanktabelle "ghost_net" ab und enthält alle
+ * relevanten Informationen zu einem gemeldeten Geisternetz.
+ */
 @Entity
 @Table(name = "ghost_net")
 public class GhostNet implements Serializable {
 
+	 /**
+     * Mögliche Statuswerte eines Geisternetzes im Lebenszyklus.
+     * GEMELDET: Netz wurde erfasst, aber noch nicht zur Bergung eingeplant.
+     * BERGUNG_BEVORSTEHEND: Eine bergende Person hat sich eingetragen.
+     * GEBORGEN: Das Netz wurde erfolgreich geborgen.
+     * VERSCHOLLEN: Das Netz konnte nicht mehr gefunden werden.
+     */
 	public enum Status {
 		GEMELDET, BERGUNG_BEVORSTEHEND, GEBORGEN, VERSCHOLLEN
 	}
 
+	// Geschätzte Größe des Geisternetzes
 	public enum Groesse {
 		KLEIN, MITTEL, GROSS
 	}
 
+	//Primärschlüssen 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	//Breitengrad des Fundorts (Pflichtfeld)
 	@Column(nullable = false)
 	private Double latitude;
 
+	// Längengrad des Fundorts (Pflichtfeld)
 	@Column(nullable = false)
 	private Double longitude;
 
+	// Geschätzte Größe des Netzes
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Groesse groesse;
 
+	//Aktueller Status des Netzes
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Status status = Status.GEMELDET;
 
+	//Zeitstempel der Erfassung (wird automatisch gesetzt beim anlegen)
 	@Column(name = "erstellt_am")
 	private LocalDateTime erstelltAm = LocalDateTime.now();
 
@@ -54,9 +73,11 @@ public class GhostNet implements Serializable {
 
 	// Konstruktoren
 
+	//Parameterloser Konstruktor (für JPA)
 	public GhostNet() {
 	}
 
+	// Konstruktor zum Anlegen eines neuen Geisternetzes
 	public GhostNet(Double latitude, Double longitude, Groesse groesse) {
 		this.latitude = latitude;
 		this.longitude = longitude;
